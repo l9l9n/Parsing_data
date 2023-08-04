@@ -97,8 +97,8 @@ def multi_pars(page_num):
     URL = 'https://www.house.kg/snyat-kvartiru?region=1&town=2&sort_by=upped_at+desc'
     
     page_url = URL + f'&page={page_num}'
-    print(page_num)
-    html = get_html(page_num)
+    print(page_url)
+    html = get_html(page_url)
     links = get_page_links(html)
     for link in links:
         detail_html = get_html(link)
@@ -110,7 +110,11 @@ def main():
     URL = 'https://www.house.kg/snyat-kvartiru?region=1&town=2&sort_by=upped_at+desc'
     last_page = get_last_page(get_html(URL))
     html = get_html(URL)
-    
+
+    with Pool(40) as p:
+        p.map(multi_pars, range(1, 50))
+
+
     end = datetime.now()
     result = end - start
     print(result)
